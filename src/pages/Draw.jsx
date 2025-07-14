@@ -68,6 +68,35 @@ const Draw = () => {
     ctx.fillStyle = e.target.value;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
   };
+  const getTouchPos = (touchEvent) => {
+    const rect = canvasRef.current.getBoundingClientRect();
+    const touch = touchEvent.touches[0];
+    return {
+      x: touch.clientX - rect.left,
+      y: touch.clientY - rect.top,
+    };
+  };
+
+  const handleTouchStart = (e) => {
+    e.preventDefault();
+    isDrawing.current = true;
+    const { x, y } = getTouchPos(e);
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+  };
+
+  const handleTouchMove = (e) => {
+    e.preventDefault();
+    if (!isDrawing.current) return;
+    const { x, y } = getTouchPos(e);
+    ctx.lineTo(x, y);
+    ctx.stroke();
+  };
+
+  const handleTouchEnd = (e) => {
+    e.preventDefault();
+    isDrawing.current = false;
+  };
 
   return (
     <div className="w-full min-h-screen bg-[var(--bg-body)] text-[var(--text)] px-6 py-8 md:px-12">
@@ -137,11 +166,14 @@ const Draw = () => {
       <div className="border border-[var(--border)] rounded-lg overflow-hidden shadow-[var(--shadow)]  h-[80vh] w-full">
         <canvas
           ref={canvasRef}
-          className="w-full h-full cursor-crosshair"
+          className="w-full h-full cursor-crosshair touch-none"
           onMouseDown={handleMouseDown}
           onMouseMove={handleMouseMove}
           onMouseUp={handleMouseUp}
           onMouseLeave={handleMouseUp}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
         />
       </div>
     </div>
