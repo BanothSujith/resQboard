@@ -82,7 +82,7 @@ const Home = () => {
         </h2>
         {location ? (
           <>
-            <p className="text-[var(--text-light)] mb-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            <p className="text-[var(--text-light)] mb-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 justify-between items-center">
               {Object.entries(location).map(([key, value]) => (
                 <span key={key} >
                   <span className="md:text-xl font-semibold">{key.charAt(0).toUpperCase() + key.slice(1)}</span>: <span className="font-semibold opacity-90">{ "number" === typeof(value)? value?.toFixed(4) : "N/A"}</span>
